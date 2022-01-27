@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Review{% endblock title %}
+
+{% block content %}
+    <section id="input">
+        <form id="input-form" method="post" action="/">
+            {% csrf_token %}
+            <label for="username">Input your name</label>
+            <input type="text" name="username" id="username">
+            <button type="submit">Send</button>
+        </form>
+    </section>
+{% endblock content %}
