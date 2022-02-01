@@ -3,12 +3,24 @@
 {% block title %}Review{% endblock title %}
 
 {% block content %}
-    <section id="input">
-        <form id="input-form" method="post" action="/">
-            {% csrf_token %}
-            <label for="username">Input your name</label>
-            <input type="text" name="username" id="username">
-            <button type="submit">Send</button>
-        </form>
-    </section>
+
+    <form method="post" action="/">
+        {% csrf_token %}
+        
+        {% comment %}
+        Создаёт форму с помощью джанго по частям в нужном порядке элементов формы 
+        можно цельно форму просто через {{ input_form }}
+        {% endcomment %}
+        
+        {% for field in input_form %}
+            <div class="form-control {% if field.arrors %}arrors{% endif %}">
+                {{ field.label }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Send</button>
+    </form>
+
 {% endblock content %}
