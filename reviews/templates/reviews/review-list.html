@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Reviews{% endblock title %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'reviews/css/review-list.css' %}">
+{% endblock css_files %}
+
+{% block content %}
+<section id='all-reviews'>
+    <ul>
+        {% comment %} 
+        Из view передаётся контекст (context) из класса ReviewListView
+        {% endcomment %}
+        {% for review in reviews %}
+            <li>
+                <article class='review'>
+                    <a href="{% url 'review-ditail' id=review.id %}"
+                        <p class="quote">{{ review.review_text|truncatechars:30 }}</p>
+                        <div class="caption">
+                            <p>{{ review.user_name }} (rating {{ review.rating }})</p>
+                        </div>
+                    </a>
+                </article>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock content %}

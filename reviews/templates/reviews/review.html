@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Review{% endblock title %}
 
@@ -22,5 +23,7 @@
 
         <button type="submit">Send</button>
     </form>
+    
+    <p class='a-container'><a class="a-button" href="{% url 'reviews' %}">All reviews</a></p>
 
 {% endblock content %}

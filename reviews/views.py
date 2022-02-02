@@ -1,10 +1,14 @@
-from pdb import post_mortem
+from django import views
 from django.shortcuts import render
-from django.http import HttpResponseRedirect        #для переадресации формы после post на страницу thank-you.html
-from django.views import View
+from django.http import HttpResponseRedirect        # для переадресации формы после post на страницу thank-you.html
+from django.views import View                       # для создания view на основе класса View
+from django.views.generic.base import TemplateView
+from django.views.generic import ListView
+
+
 
 from . forms import ReviewForm
-# from . models import Review
+from . models import Review
 
 # Create your views here.
 
@@ -26,37 +30,31 @@ class ReviewView(View):
             "input_form": form
         })
 
-# def review(request):
-#     if request.method == 'POST':
-#         # получаем данные введённые в форму
-#         form = ReviewForm(request.POST)
+class ThankYouView(TemplateView):
+    # template_name спец свойство
+    template_name = "reviews/thank-you.html"
 
-#         # проверка на корректность данных. Встроено в джанго
-#         if form.is_valid():
-#             print(f"user input: {form.cleaned_data}")
-#             # это ручное сохранение данных из формы в базу
-#             # review = Review(
-#             #     user_name=form.cleaned_data['user_name'],
-#             #     review_text=form.cleaned_data['review_text'],
-#             #     rating=form.cleaned_data['rating'])
-#             # review.save()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['massage'] = 'this work!'
+        return context
 
-#             # Но если используем формы на основе классов, то
-#             # просто сохраняем форму в базу так
-#             form.save()
+class ReviewListView(TemplateView):
+    template_name = "reviews/review-list.html"
 
-#             # переадресация на домен /thank-you который описан в urls.py
-#             return HttpResponseRedirect("thank-you")
-#     else:
-#         # если метод не POST, а GET - рендерим чистую форму (кнопка не нажималась)
-#         form = ReviewForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        reviews = Review.objects.all()
+        context['reviews'] = reviews
+        return context
 
-#     # есил метод POST, но валидация не прошла, то на рендер идёт не чистая форма, а ReviewForm(request.POST)
-#     # позволяет не терять введённые данные, если они неправильные
-#     return render(request, "reviews/review.html", {
-#             "input_form": form
-#     })
+class ReviewDitailView(TemplateView):
+    template_name = "reviews/review-ditail.html"
 
-
-def thank_you(request):
-    return render(request, "reviews/thank-you.html")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ищем в kwargs наш переменный параметр id, который передаём в urls.py <int:id>
+        review_id = kwargs['id']
+        review = Review.objects.get(id=review_id)
+        context['review'] = review
+        return context

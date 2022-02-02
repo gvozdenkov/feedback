@@ -57,6 +57,16 @@ button:hover {
     background-color: rgb(66, 212, 129);
 }
 
+.a-button {
+    padding: 10px 20px;
+    background-color: seagreen;
+    border-radius: 12px;
+    text-decoration: none;
+    color: seashell;
+    font-family: sans-serif;
+}
 
-
+.a-container {
+    text-align: center;
+}
 
